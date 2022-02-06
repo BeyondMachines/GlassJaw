@@ -27,23 +27,34 @@ def login_required(f):
 def error_message_helper(msg):
     return '{ "status": "fail", "message": "' + msg + '"}'
 
-
+@login_required
 def get_all_users():
     return_value = jsonify({'users': User.get_all_users()})
     return return_value
 
+@login_required
+def count_all_users():
+    return_value = jsonify({'users': User.count_all_users()})
+    return return_value
 
+@login_required
 def debug():
     return_value = jsonify({'users': User.get_all_users_debug()})
     return return_value
 
-
+@login_required
 def get_by_username(username):
     if User.get_user(username):
         return Response(str(User.get_user(username)), 200, mimetype="application/json")
     else:
         return Response(error_message_helper("User not found"), 404, mimetype="application/json")
 
+@login_required
+def get_by_id(id):
+    if User.get_user_id(id):
+        return Response(str(User.get_user_id(id)), 200, mimetype="application/json")
+    else:
+        return Response(error_message_helper("User not found"), 404, mimetype="application/json")
 
 def register_user():
     request_data = request.get_json()

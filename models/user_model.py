@@ -65,6 +65,10 @@ class User(db.Model):
         return{'username': self.username, 'password': self.password, 'email': self.email, 'admin': self.admin}
 
     @staticmethod
+    def count_all_users():
+        return User.query.count()
+
+    @staticmethod
     def get_all_users():
         return [User.json(user) for user in User.query.all()]
 
@@ -79,12 +83,20 @@ class User(db.Model):
             query = db.session.execute(user_query)
             ret = query.fetchone()
             if ret:
-                fin_query = '{"username": "%s", "email": "%s"}' % (ret[1], ret[3])
+                fin_query = '{"id": "%s", "username": "%s", "email": "%s"}' % (ret[0], ret[1], ret[3])
             else:
                 fin_query = None
         else:
             fin_query = User.query.filter_by(username=username).first()
         return fin_query
+
+
+    @staticmethod
+    def get_user_id(id):
+        ret = User.query.filter_by(id=id).first()
+        fin_query = '{"id": "%s", "username": "%s"}' % (ret.id, ret.username)
+        return fin_query
+
 
     @staticmethod
     def register_user(username, password, email, admin=False):
