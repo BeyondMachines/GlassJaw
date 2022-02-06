@@ -33,12 +33,12 @@ paths:
     get:
       tags:
       - users
-      summary: Retrieves all users
-      description: Displays all users with basic information
-      operationId: api_views.users.get_all_users
+      summary: Retrieves the number of all users
+      description: Displays a total number of all users
+      operationId: api_views.users.count_all_users
       responses:
         200:
-          description: See basic info about all users
+          description: See number of users
           content: {}
   /users/v1/_debug:
     get:
@@ -105,6 +105,37 @@ paths:
         400:
           description: Invalid request
           content: {}
+  /users/v1/id/{id}:
+    get:
+      tags:
+        - users
+      summary: Retrieves user by id
+      description: Displays user by id
+      operationId: api_views.users.get_by_id
+      parameters:
+        - name: id
+          in: path
+          description: retrieve username data
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully display user info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    username:
+                      type: string
+        404:
+          description: User not found
+          content: { }
   /users/v1/{username}:
     get:
       tags:
@@ -129,6 +160,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    id:
+                      type: number
                     username:
                       type: string
                     email:
