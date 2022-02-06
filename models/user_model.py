@@ -5,6 +5,14 @@ from config import db, vuln_app
 from app import vuln, alive
 from models.books_model import Book
 from random import randrange
+import hashlib
+
+
+def sha_encode_password(password):
+    encoded_pass = password.encode()
+    hash_pass = hashlib.sha1(encoded_pass)
+    return hash_pass.hexdigest()
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -19,7 +27,7 @@ class User(db.Model):
     def __init__(self, username, password, email, admin=False):
         self.username = username
         self.email = email
-        self.password = password
+        self.password = sha_encode_password(password)
         self.admin = admin
 
     def __repr__(self):
