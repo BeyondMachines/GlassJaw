@@ -1,6 +1,8 @@
 import re
 import jsonschema
 import jwt
+from functools import wraps
+
 
 from config import db, vuln_app
 from api_views.json_schemas import *
@@ -8,6 +10,18 @@ from flask import jsonify, Response, request, json
 from models.user_model import User
 from models.user_model import sha_encode_password
 from app import vuln
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        resp = token_validator(request.headers.get('Authorization'))
+        if "expired" in resp:
+            return Response(error_message_helper(resp), 401, mimetype="application/json")
+        elif "Invalid token" in resp:
+            return Response(error_message_helper(resp), 401, mimetype="application/json")
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 def error_message_helper(msg):
@@ -66,7 +80,6 @@ def register_user():
 
 def login_user():
     request_data = request.get_json()
-
     try:
         # validate the data are in the correct form
         jsonschema.validate(request_data, login_user_schema)
@@ -109,7 +122,7 @@ def token_validator(auth_header):
     else:
         return "Invalid token"
 
-
+@login_required
 def update_email(username):
     request_data = request.get_json()
     try:
@@ -117,92 +130,76 @@ def update_email(username):
     except:
         return Response(error_message_helper("Please provide a proper JSON body."), 400, mimetype="application/json")
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    else:
-        user = User.query.filter_by(username=resp).first()
-        if vuln:  # Regex DoS
-            match = re.search(
-                r"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@{1}([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$",
-                str(request_data.get('email')))
-            if match:
-                user.email = request_data.get('email')
-                db.session.commit()
-                responseObject = {
-                    'status': 'success',
-                    'data': {
-                        'username': user.username,
-                        'email': user.email
-                    }
-                }
-                return Response(json.dumps(responseObject), 204, mimetype="application/json")
-            else:
-                return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
-        else:
-            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-            if (re.search(regex, request_data.get('email'))):
-                user.email = request_data.get('email')
-                db.session.commit()
-                responseObject = {
-                    'status': 'success',
-                    'data': {
-                        'username': user.username,
-                        'email': user.email
-                    }
-                }
-                return Response(json.dumps(responseObject), 204, mimetype="application/json")
-            else:
-                return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
-
-
-
-def update_password(username):
-    request_data = request.get_json()
-    resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    else:
-        if request_data.get('password'):
-            password = sha_encode_password(request_data.get('password'))
-            if vuln:  # Unauthorized update of password of another user
-                user = User.query.filter_by(username=username).first()
-                user.password = password
-                db.session.commit()
-            else:
-                user = User.query.filter_by(username=resp).first()
-                user.password = password
-                db.session.commit()
+    user = User.query.filter_by(username=resp).first()
+    if vuln:  # Regex DoS
+        match = re.search(
+            r"^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@{1}([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$",
+            str(request_data.get('email')))
+        if match:
+            user.email = request_data.get('email')
+            db.session.commit()
             responseObject = {
                 'status': 'success',
-                'Password': 'Updated.'
+                'data': {
+                    'username': user.username,
+                    'email': user.email
+                }
             }
             return Response(json.dumps(responseObject), 204, mimetype="application/json")
         else:
-            return Response(error_message_helper("Malformed Data"), 400, mimetype="application/json")
+            return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
+    else:
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if (re.search(regex, request_data.get('email'))):
+            user.email = request_data.get('email')
+            db.session.commit()
+            responseObject = {
+                'status': 'success',
+                'data': {
+                    'username': user.username,
+                    'email': user.email
+                }
+            }
+            return Response(json.dumps(responseObject), 204, mimetype="application/json")
+        else:
+            return Response(error_message_helper("Please Provide a valid email address."), 400, mimetype="application/json")
 
 
+@login_required
+def update_password(username):
+    request_data = request.get_json()
+    resp = token_validator(request.headers.get('Authorization'))
+    if request_data.get('password'):
+        password = sha_encode_password(request_data.get('password'))
+        if vuln:  # Unauthorized update of password of another user
+            user = User.query.filter_by(username=username).first()
+            user.password = password
+            db.session.commit()
+        else:
+            user = User.query.filter_by(username=resp).first()
+            user.password = password
+            db.session.commit()
+        responseObject = {
+            'status': 'success',
+            'Password': 'Updated.'
+        }
+        return Response(json.dumps(responseObject), 204, mimetype="application/json")
+    else:
+        return Response(error_message_helper("Malformed Data"), 400, mimetype="application/json")
 
 
+@login_required
 def delete_user(username):
     resp = token_validator(request.headers.get('Authorization'))
-    if "expired" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    elif "Invalid token" in resp:
-        return Response(error_message_helper(resp), 401, mimetype="application/json")
-    else:
-        user = User.query.filter_by(username=resp).first()
-        if user.admin:
-            if bool(User.delete_user(username)):
-                responseObject = {
-                    'status': 'success',
-                    'message': 'User deleted.'
-                }
-                return Response(json.dumps(responseObject), 200, mimetype="application/json")
-            else:
-                return Response(error_message_helper("User not found!"), 404, mimetype="application/json")
+    user = User.query.filter_by(username=resp).first()
+    if user.admin:
+        if bool(User.delete_user(username)):
+            responseObject = {
+                'status': 'success',
+                'message': 'User deleted.'
+            }
+            return Response(json.dumps(responseObject), 200, mimetype="application/json")
         else:
-            return Response(error_message_helper("Only Admins may delete users!"), 401, mimetype="application/json")
+            return Response(error_message_helper("User not found!"), 404, mimetype="application/json")
+    else:
+        return Response(error_message_helper("Only Admins may delete users!"), 401, mimetype="application/json")
