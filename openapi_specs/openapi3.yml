@@ -17,14 +17,12 @@ paths:
       responses:
         200:
           description: Creates and populates the database with dummy data
-          content: {}
+          content: {}  
   /:
     get:
       tags:
       - home
-      summary: VAmPI home
-      description: VAmPI is a vulnerable on purpose API. It was created in order to evaluate the efficiency of third party tools in identifying vulnerabilities in APIs but it can also be used in learning/teaching purposes.
-      operationId: api_views.main.basic
+      operationId: app.hello
       responses:
         200:
           description: Home - Help
