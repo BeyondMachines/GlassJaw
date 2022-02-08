@@ -11,8 +11,8 @@ paths:
     get:
       tags:
       - db-init
-      summary: Creates and populates the database with dummy data
-      description: Creates and populates the database with dummy data
+      summary: Creates and populates the database with dummy data. Works only if the 'destructive' variable is set to 1 in app.py
+      description: Creates and populates the database with dummy data. Works only if the 'destructive' variable is set to 1 in app.py
       operationId: api_views.main.populate_db
       responses:
         200:
@@ -170,8 +170,8 @@ paths:
     delete:
       tags:
       - users
-      summary: Deletes user by username (Only Admins)
-      description: Deletes user by username (Only Admins)
+      summary: Deletes user by username (Only Admins).  Works only if the 'destructive' variable is set to 1 in app.py
+      description: Deletes user by username (Only Admins). Works only if the 'destructive' variable is set to 1 in app.py
       operationId: api_views.users.delete_user
       parameters:
       - name: username
