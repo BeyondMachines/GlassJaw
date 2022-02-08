@@ -9,7 +9,7 @@ from api_views.json_schemas import *
 from flask import jsonify, Response, request, json
 from models.user_model import User
 from models.user_model import sha_encode_password
-from app import vuln
+from app import vuln, destructive
 
 
 def login_required(f):
@@ -202,7 +202,7 @@ def update_password(username):
 def delete_user(username):
     resp = token_validator(request.headers.get('Authorization'))
     user = User.query.filter_by(username=resp).first()
-    if user.admin:
+    if user.admin and destructive:
         if bool(User.delete_user(username)):
             responseObject = {
                 'status': 'success',
@@ -212,4 +212,4 @@ def delete_user(username):
         else:
             return Response(error_message_helper("User not found!"), 404, mimetype="application/json")
     else:
-        return Response(error_message_helper("Only Admins may delete users!"), 401, mimetype="application/json")
+        return Response(error_message_helper("Not admin or destructive actions disabled!"), 401, mimetype="application/json")

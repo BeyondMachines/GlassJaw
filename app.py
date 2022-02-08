@@ -12,6 +12,9 @@ vuln = int(os.getenv('vulnerable', 1))
 # token alive for how many seconds?
 alive = int(os.getenv('tokentimetolive', 3600))
 
+# limiting destructive functions
+destructive = int(os.getenv('vulnerable', 0))
+
 def hello():
         return flask.send_file('static/index.html')
 

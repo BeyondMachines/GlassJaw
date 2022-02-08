@@ -4,7 +4,8 @@ from sqlalchemy.orm import relationship
 from config import db, vuln_app
 from app import vuln, alive
 from models.books_model import Book
-from random import randrange
+from random import random, randrange, choice
+import string
 import hashlib
 
 
@@ -13,6 +14,8 @@ def sha_encode_password(password):
     hash_pass = hashlib.sha1(encoded_pass)
     return hash_pass.hexdigest()
 
+def random_string_generator(str_size, allowed_chars):
+    return ''.join(choice(allowed_chars) for x in range(str_size))
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -90,19 +93,20 @@ class User(db.Model):
             fin_query = User.query.filter_by(username=username).first()
         return fin_query
 
-
     @staticmethod
     def get_user_id(id):
         ret = User.query.filter_by(id=id).first()
         fin_query = '{"id": "%s", "username": "%s"}' % (ret.id, ret.username)
         return fin_query
 
-
     @staticmethod
     def register_user(username, password, email, admin=False):
         new_user = User(username=username, password=password, email=email, admin=admin)
-        randomint = str(randrange(100))
-        new_user.books = [Book(book_title="bookTitle" + randomint, secret_content="secret for bookTitle" + randomint)]
+        randomloop = randrange(2,5)
+        for i in range(randomloop):
+            randomint = str(randrange(100))
+            secret = str(randrange(300,9000))
+            new_user.books = [Book(book_title="New_Book_Title_" + randomint, secret_content=secret)]
         db.session.add(new_user)
         db.session.commit()
 
@@ -114,6 +118,10 @@ class User(db.Model):
 
     @staticmethod
     def init_db_users():
-        User.register_user("name1", "pass1", "mail1@mail.com", False)
-        User.register_user("name2", "pass2", "mail2@mail.com", False)
-        User.register_user("admin", "pass1", "admin@mail.com", True)
+        chars = string.digits
+        size = 2
+        User.register_user("bwayne", "Password"+random_string_generator(size, chars), "mail1@mail.com", False)
+        User.register_user("srogers",  "Password"+random_string_generator(size, chars), "mail2@mail.com", False)
+        User.register_user("mmurdock",  "Password"+random_string_generator(size, chars), "mail3@mail.com", False)
+        User.register_user("pparker",  "Password"+random_string_generator(size, chars), "mail4@mail.com", True)
+        User.register_user("ckent",  "Password"+random_string_generator(size, chars), "mail5@mail.com", True)
