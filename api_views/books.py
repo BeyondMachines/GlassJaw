@@ -17,6 +17,10 @@ def get_all_books():
     return_value = jsonify({'Books': Book.get_all_books()})
     return return_value
 
+def count_all_books():
+    return_value = jsonify({'Books': Book.count_all_books()})
+    return return_value
+
 
 def add_new_book():
     request_data = request.get_json()

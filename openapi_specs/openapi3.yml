@@ -262,12 +262,12 @@ paths:
     get:
       tags:
       - books
-      summary: Retrieves all books
-      description: Retrieves all books
-      operationId: api_views.books.get_all_books
+      summary: Retrieves the number of books
+      description: Retrieves the number of all books
+      operationId: api_views.books.count_all_books
       responses:
         200:
-          description: See all books
+          description: See number of all books
           content: {}
     post:
       tags:

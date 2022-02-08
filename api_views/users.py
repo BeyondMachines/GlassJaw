@@ -32,7 +32,6 @@ def get_all_users():
     return_value = jsonify({'users': User.get_all_users()})
     return return_value
 
-@login_required
 def count_all_users():
     return_value = jsonify({'users': User.count_all_users()})
     return return_value
