@@ -26,3 +26,6 @@ class Book(db.Model):
     def get_all_books():
         return [Book.json(user) for user in Book.query.all()]
 
+    @staticmethod
+    def count_all_books():
+        return Book.query.count()
