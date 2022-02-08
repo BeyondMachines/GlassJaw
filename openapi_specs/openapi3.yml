@@ -333,3 +333,39 @@ paths:
         401:
           description: User not authorized
           content: {}
+  /books/v1/user/{username}:
+    get:
+      tags:
+        - books
+      summary: Retrieves books owned by username
+      description: Retrieves books owned by username
+      operationId: api_views.books.get_by_owner
+      parameters:
+        - name: username
+          in: path
+          description: retrieve book data
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully retrieve book info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    book_title:
+                      type: string
+                    secret:
+                      type: string
+                    owner:
+                      type: string
+        404:
+          description: User not found
+          content: { }
+        401:
+          description: User not authorized
+          content: {}
