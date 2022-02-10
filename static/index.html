@@ -41,7 +41,6 @@
     text-decoration:none;
     outline:0;
     font-family:inherit;
-    font-size:inherit;
     line-height:inherit;
     font-weight:inherit;
     font-style:inherit;
@@ -99,21 +98,22 @@ table, th, td {
         
         <h1 style="font-weight: bold;">GlassJaw Publishing </h1>
 <!--        <a class="contact" href="mailto:aesse@alessandroscarpellini.it">aesse@alessandroscarpellini.it</a> /-->
+        <p></p>
         <p>GlassJaw Publishing is a holding company that owns multiple publishing and media production companies. We work with thousands of authors to help them produce, market and sell their work.<p>
         <p>We are implementing a central platform that will enable our authors to monitor the interest of the public in their work  and to track the royalties associated with their work. This platform is our GlassJaw Author Management. </p>
 
-        <h1 style="font-weight: bold;">GlassJaw Author Management  Technical details</h1>
+        <h2 style="font-weight: bold;">GlassJaw Author Management  Technical details</h2>
         <p>The GlassJaw Author Management is designed to be API first in order to enable our subsidiaries to build their own frontend according to their branding and needs.</p>
         <p>At this moment the microservice API provides centralized management of royalties paid to book authors.</p>
         <p>The platform provides the ability for the authors to register to the platform, to add their books as well as their initial royalties and to monitor the details of their royalties. To maintain security we have enabled all authors to reset their passwords whenever they need to. </p> 
-        <h1 style="font-weight: bold;">Authentication</h1>
+        <h3 style="font-weight: bold;">Authentication</h3>
         <p>The authentication is performed via JWT bearer token that’s returned in a JSON when using the login endpoint. 
         For testing purposes please use the Postman application: on the Authentication tab choose the Bearer option and populate the auth_token value into the Token field. </p>
-        <h1 style="font-weight: bold;">User flow</h1>
-        <h1 style="font-weight: bold;">Outside visitors</h1>
+        <h2 style="font-weight: bold;">User flow</h1>
+        <h3 style="font-weight: bold;">Outside visitors</h1>
         <p>The visitors can see the number of users via the /users/v1 endpoint
         The visitors can see the total number of users/authors via the /books/v1 endpoint</p>
-        <h1 style="font-weight: bold;">Registered users</h1>
+        <h4 style="font-weight: bold;">Registered users</h1>
         <p>The user can register to the system via the register /users/v1/register endpoint. 
             After registration, the user can log in to the system via the /users/v1/login endpoint. 
             After logging in the user can get their information via the /users/v1/{username} endpoint or the /users/v1/id/{id} endpoint.
@@ -121,7 +121,7 @@ table, th, td {
             After logging in the user can list their books and royalties via the /books/v1/user/{username} 
             After logging in the user can register another of their books via the /books/v1 endpoint. </p>
         <p>Session length - variable, check what is configured on the platform. </p>
-        <h1 style="font-weight: bold;">Integration/API endpoints</h1>
+        <h2 style="font-weight: bold;">Integration/API endpoints</h1>
         <p>Below is a table of endpoints of the system, so our subsidiaries can create their own frontend. 
            Note to developers - in order to facilitate faster development there are several debug functions still active. Call the head office for more details on use of those functions.</p>
        <table style="border: 1px solid white;"class="c28">
