@@ -1,10 +1,297 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>GlassJaw</title>
-    </head>
-    <body>
-        <p>Welcome to GlassJaw.</p>
-    </body>
-</html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png?v=6">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png?v=6">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png?v=6">
+    <link rel="manifest" href="assets/favicons/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="theme-color" content="#000000">
 
+    <meta name="description"         content="Vulnerable API">
+    <meta property="og:type"         content="website">
+    <meta property='og:title'        content='GlassJaw'>
+    <meta property='og:description'  content="GlassJaw is a Vulnerable API">
+    <meta property="og:site_name"    content="GlassJaw">
+    <title>GlassJaw</title>
+    
+    <style>
+        @font-face{
+    font-family:'Scto Grotesk';
+    src:local('Scto Grotesk A Regular'),local('SctoGroteskA-Regular'),url(assets/fonts/SctoGroteskA-Regular.woff2) format('woff2');
+    font-weight:400;
+    font-style:normal;
+    font-display:swap
+}
+:root{
+    background:#000;
+    color:#fff;
+    font-family:"Scto Grotesk",Inter,"Inter UI", "Inter-Regular",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif,"Sans Serif",Icons;
+    font-size:18px;
+    line-height:30px
+}
+*,::after,::before{
+    box-sizing:border-box;
+    padding:0;
+    margin:0;
+    background:0 0;
+    text-decoration:none;
+    outline:0;
+    font-family:inherit;
+    line-height:inherit;
+    font-weight:inherit;
+    font-style:inherit;
+    color:inherit;
+    border:none;
+    list-style:none;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-font-smoothing:antialiased
+}
+body{
+    padding:10vw
+}
+@media (min-width:1000px){
+    body{
+        padding:100px
+    }
+}
+main{
+    max-width:85ch
+}
+p:not(:last-child){
+    margin-bottom:30px
+}
+.contact{
+    margin-bottom:60px;
+    display:inline-block
+}
+a{
+    opacity:.5;
+    transition:opacity .2s
+}
+a:hover{
+    opacity:1
+}
+ @media screen and (max-width: 750px) {
+    .contact {
+        margin-bottom: 30px;
+    }
+}
+table, th, td {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+ th, td {
+  padding: 5px;
+}
+
+    </style>
+
+
+</head>
+<body>
+    
+    <main>
+        
+        <h1 style="font-weight: bold;">GlassJaw Publishing </h1>
+<!--        <a class="contact" href="mailto:aesse@alessandroscarpellini.it">aesse@alessandroscarpellini.it</a> /-->
+        <p></p>
+        <p>GlassJaw Publishing is a holding company that owns multiple publishing and media production companies. We work with thousands of authors to help them produce, market and sell their work.<p>
+        <p>We are implementing a central platform that will enable our authors to monitor the interest of the public in their work  and to track the royalties associated with their work. This platform is our GlassJaw Author Management. </p>
+
+        <h2 style="font-weight: bold;">GlassJaw Author Management  Technical details</h2>
+        <p>The GlassJaw Author Management is designed to be API first in order to enable our subsidiaries to build their own frontend according to their branding and needs.</p>
+        <p>At this moment the microservice API provides centralized management of royalties paid to book authors.</p>
+        <p>The platform provides the ability for the authors to register to the platform, to add their books as well as their initial royalties and to monitor the details of their royalties. To maintain security we have enabled all authors to reset their passwords whenever they need to. </p> 
+        <h3 style="font-weight: bold;">Authentication</h3>
+        <p>The authentication is performed via JWT bearer token that’s returned in a JSON when using the login endpoint. 
+        For testing purposes please use the Postman application: on the Authentication tab choose the Bearer option and populate the auth_token value into the Token field. </p>
+        <h2 style="font-weight: bold;">User flow</h1>
+        <h3 style="font-weight: bold;">Outside visitors</h1>
+        <p>The visitors can see the number of users via the /users/v1 endpoint
+        The visitors can see the total number of users/authors via the /books/v1 endpoint</p>
+        <h4 style="font-weight: bold;">Registered users</h1>
+        <p>The user can register to the system via the register /users/v1/register endpoint. 
+            After registration, the user can log in to the system via the /users/v1/login endpoint. 
+            After logging in the user can get their information via the /users/v1/{username} endpoint or the /users/v1/id/{id} endpoint.
+            After logging in the user can reset their password via the /users/v1/{username}/password endpoint
+            After logging in the user can list their books and royalties via the /books/v1/user/{username} 
+            After logging in the user can register another of their books via the /books/v1 endpoint. </p>
+        <p>Session length - variable, check what is configured on the platform. </p>
+        <h2 style="font-weight: bold;">Integration/API endpoints</h1>
+        <p>Below is a table of endpoints of the system, so our subsidiaries can create their own frontend. 
+           Note to developers - in order to facilitate faster development there are several debug functions still active. Call the head office for more details on use of those functions.</p>
+       <table style="border: 1px solid white;"class="c28">
+        <tbody>
+            <tr class="c7">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Method</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Endpoint</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Action</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GlassJaw Author Management home (GJAW)</span></p>
+                </td>
+            </tr>
+            <tr class="c7">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Displays the number of users on the platform</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">POST</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1/register</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Register new user</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">POST</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1/login</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Login to GJAW</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1/{username}</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Displays user information by username</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1/id/{id}</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Displays user information by id</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">PUT</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1/{username}/password</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Update users password</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/books/v1</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Retrieves the number of all books on the platform</span></p>
+                </td>
+            </tr>
+            <tr class="c16">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">POST</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/books/v1</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Add new book for the user</span></p>
+                </td>
+            </tr>
+            <tr class="c7">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/books/v1/{book}</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Retrieves book by title along with secret</span></p>
+                </td>
+            </tr>
+            <tr class="c7">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/books/v1/user/{username}</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Retrieves all books by the user</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="c3 c6"><span class="c5"></span></p>
+    <p class="c3"><span class="c5">Admin level functions that are destructive. Use with care. </span></p>
+    <p class="c3 c6"><span class="c5"></span></p>
+    <a id="t.162fcf8a3e3d4356b7f2de570a5933eb93b79ce0"></a><a id="t.1"></a>
+    <table class="c28">
+        <tbody>
+            <tr class="c7">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">DELETE</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/users/v1/{username}</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Deletes user by username (Only Admins in debug mode) - not for production use. </span></p>
+                </td>
+            </tr>
+            <tr class="c7">
+                <td class="c17" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">GET</span></p>
+                </td>
+                <td class="c10" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">/createdb</span></p>
+                </td>
+                <td class="c8" colspan="1" rowspan="1">
+                    <p class="c0"><span class="c1">Reset system to factory settings</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   
+    </main>
+         
+</body>
+</html>
