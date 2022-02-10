@@ -13,7 +13,7 @@ vuln = int(os.getenv('vulnerable', 1))
 alive = int(os.getenv('tokentimetolive', 3600))
 
 # limiting destructive functions
-destructive = int(os.getenv('vulnerable', 0))
+destructive = int(os.getenv('destructive', 0))
 
 def hello():
         return flask.send_file('static/index.html')
