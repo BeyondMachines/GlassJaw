@@ -4,9 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 AWS_USER = 'AKIA2BYS3MX7V3RNOD5W'
-AWS_PASS = 'ZnVjayB5b3UgdmVyeSBtdWNoCg==U4QyBaxVyRZ9fsd'
+AWS_PASS = 'ZnVjayB5b3UgdmVyeSBtdWNoCg==U4QyBaxVyRZ9'
 
-new_variable = ['test']
 
 vuln_app = connexion.App(__name__, specification_dir='./openapi_specs')
 
