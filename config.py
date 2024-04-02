@@ -3,9 +3,6 @@ import connexion
 from flask_sqlalchemy import SQLAlchemy
 
 
-AWS_USER = 'AKIA2BYS3MX7V3RNOD5W'
-AWS_PASS = 'ZnVjayB5b3UgdmVyeSBtdWNoCg==U4QyBaxVyRZ9'
-
 ENDPOINT = 'https://api.example.com/v1/data?apiKey=12345abcdeEXAMPLEKEY&token=67890fghijEXAMPLETOKEN'
 
 vuln_app = connexion.App(__name__, specification_dir='./openapi_specs')
