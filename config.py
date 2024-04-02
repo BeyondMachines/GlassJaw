@@ -3,8 +3,6 @@ import connexion
 from flask_sqlalchemy import SQLAlchemy
 
 
-ENDPOINT = 'https://api.example.com/v1/data?apiKey=12345abcdeEXAMPLEKEY&token=67890fghijEXAMPLETOKEN'
-
 vuln_app = connexion.App(__name__, specification_dir='./openapi_specs')
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(vuln_app.root_path, 'database/database.db')
